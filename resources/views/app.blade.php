@@ -8,6 +8,9 @@
             :employee="e"
             :header-height="headerHeight"
             :row-height="rowHeight"></employee-column>
+
+            <modals></modals>
+            
         </div>
     </div>
 @endsection

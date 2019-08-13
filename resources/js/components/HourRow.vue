@@ -1,9 +1,12 @@
 <template>
     <div class="hour px-3 py-2 border-bottom border-right"
-    @click="createSlot" :style="`height: ${rowHeight}px`" />
+    :style="`height: ${rowHeight}px`" @click="createSlot" />
 </template>
 
 <script>
+    import { VBModal } from 'bootstrap-vue'
+    Vue.directive('b-modal', VBModal)
+
     export default {
         props: ['employee','headerHeight','hour','rowHeight'],
         computed: {
@@ -17,8 +20,15 @@
             },
             createSlot(event) {
                 let time = this.calculateTimeClicked(event.pageY - this.headerHeight)
-                console.log( this.employee.first_name )
-                console.log( time )
+                Event.$emit('modalData', {
+                    show: 'slot',
+                    action: 'post',
+                    data: {
+                        employee: this.employee,
+                        time: time
+                    }
+                })
+                this.$root.$emit('bv::show::modal', 'modal-1')
             },
             calculateTimeClicked(coordY) {
                 // DOM element height

@@ -9,6 +9,7 @@
 
         <hour-slot v-for="s in employee.slots"
         :s="s"
+        :key="s.id"
         :header-height="headerHeight"
         :row-height="rowHeight" />
     </div>
