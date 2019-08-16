@@ -20,15 +20,16 @@
             },
             createSlot(event) {
                 let time = this.calculateTimeClicked(event.pageY - this.headerHeight)
+                this.$root.$emit('bv::show::modal', 'modal-slot')
                 Event.$emit('modalData', {
                     show: 'slot',
                     action: 'post',
                     data: {
                         employee: this.employee,
-                        time: time
+                        time: time,
+                        client: false
                     }
                 })
-                this.$root.$emit('bv::show::modal', 'modal-1')
             },
             calculateTimeClicked(coordY) {
                 // DOM element height

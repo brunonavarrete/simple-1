@@ -10,21 +10,40 @@ require('./bootstrap');
 window.Vue = require('vue');
 window.Event = new Vue();
 
-Vue.component('employee-column', require('./components/EmployeeColumn.vue').default);
-Vue.component('hour-row', require('./components/HourRow.vue').default);
-Vue.component('hour-slot', require('./components/HourSlot.vue').default);
+/* App components */
+    Vue.component('employee-column', require('./components/EmployeeColumn.vue').default);
+    Vue.component('hour-row', require('./components/HourRow.vue').default);
+    Vue.component('hour-slot', require('./components/HourSlot.vue').default);
 
-/* Modals */
-    Vue.component('modals', require('./components/Modals.vue').default);
-    Vue.component('modal-slot', require('./components/ModalSlot.vue').default);
+    /* Modals */
+        Vue.component('modals', require('./components/Modals.vue').default);
+        Vue.component('modal-slot', require('./components/ModalSlot.vue').default);
+
+/* Outside components */
+    import Autocomplete from 'vuejs-auto-complete'
+    Vue.component('autocomplete', Autocomplete);
+
 
 /* App */
-
-import Autocomplete from 'vuejs-auto-complete'
-Vue.component('autocomplete', Autocomplete);
-
 const app = new Vue({
     el: '#app',
+    computed: {
+        dateShown() { // https://stackoverflow.com/questions/23593052/format-javascript-date-to-yyyy-mm-dd
+            var d = new Date(),
+            month = '' + (d.getMonth() + 1),
+            day = '' + d.getDate(),
+            year = d.getFullYear();
+
+            if (month.length < 2) month = '0' + month;
+            if (day.length < 2) day = '0' + day;
+
+            return {
+                day: day,
+                month: month,
+                year: year
+            }
+        }
+    },
     data: {
     	clients: [],
     	employees: [],

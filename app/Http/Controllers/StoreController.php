@@ -52,7 +52,7 @@ class StoreController extends Controller
     public function showByOwner($owner_id)
     {
         return Store::where('owner_id',$owner_id)
-                    ->get();
+            ->get();
     }
 
     /**

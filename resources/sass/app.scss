@@ -8,4 +8,23 @@
 @import '~bootstrap/scss/bootstrap';
 
 
-body {}
+.slot {
+	position: absolute;
+	left: 0;
+	width: 100%;
+	border-radius: 2px;
+	background-color: rgba($info, 0.25);
+	transition: background-color 0.2s;
+	cursor: pointer;
+	z-index: 1;
+	&:hover {
+		z-index: 2;
+		background-color: $info;
+		.more-data {
+			display: block;
+		}
+	}
+	.more-data {
+		display: none;
+	}
+}

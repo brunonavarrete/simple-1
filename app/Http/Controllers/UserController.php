@@ -54,7 +54,11 @@ class UserController extends Controller
     public function showByOwner($owner_id)
     {
         $users = User::where('owner_id',$owner_id)
-                    ->get();
+            ->with('slots')
+            ->with('slots.client')
+            ->with('slots.service')
+            ->with('slots.employee')
+            ->get();
 
         foreach ($users as $user) {
             // Mutator on User returns only today's

@@ -9,7 +9,10 @@
             :header-height="headerHeight"
             :row-height="rowHeight"></employee-column>
 
-            <modals></modals>
+            <modals 
+            :clients="clients"
+            :date="dateShown"
+            :employees="employees"></modals>
             
         </div>
     </div>

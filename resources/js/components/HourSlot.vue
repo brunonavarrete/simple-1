@@ -1,10 +1,15 @@
 <template>
-    <div class="slot border border-info" 
+    <div class="slot p-1 border border-info" 
     :style="{
         top: `${ elemTop }px`,
         height: `${ elemHeight }px`
-    }">
-        {{ s.begins_at }}
+    }"
+    @click="editSlot()">
+        {{ s.begins_at.substr(0,5) }} - {{ s.ends_at.substr(0,5) }}
+        <div class="more-data">
+            {{ s.client.first_name }} {{ s.client.last_name }}<br>
+            {{ s.service.name }}
+        </div>
     </div>
 </template>
 
@@ -34,13 +39,23 @@
                 let diffMinsToHours = diffMins / 60
                 return (diffHours + diffMinsToHours) * this.rowHeight
             }
+        },
+        methods: {
+            editSlot() {
+                this.$root.$emit('bv::show::modal', 'modal-slot')
+                Event.$emit('modalData', {
+                    show: 'slot',
+                    action: 'put',
+                    data: {
+                        employee: this.s.employee,
+                        time: this.s.begins_at,
+                        client: this.s.client
+                    }
+                })
+            },
         }
     };
 </script>
 
 <style lang="scss" scoped>
-    .slot {
-        position: absolute;
-        left: 0;
-    }
 </style>

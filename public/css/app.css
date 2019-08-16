@@ -10644,3 +10644,27 @@ a.text-dark:focus {
   }
 }
 
+.slot {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  border-radius: 2px;
+  background-color: rgba(108, 178, 235, 0.25);
+  transition: background-color 0.2s;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.slot:hover {
+  z-index: 2;
+  background-color: #6cb2eb;
+}
+
+.slot:hover .more-data {
+  display: block;
+}
+
+.slot .more-data {
+  display: none;
+}
+

@@ -1,9 +1,13 @@
 <template>
-    <modal-slot v-if="modalData.show == 'slot'"></modal-slot>
+    <modal-slot
+    :clients="clients"
+    :date="date"
+    :employees="employees"></modal-slot>
 </template>
 
 <script>
     export default {
+        props: ['clients','date','employees'],
         data() {
             return {
                 modalData: {}

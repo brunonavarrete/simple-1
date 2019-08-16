@@ -13,13 +13,13 @@ class CreateStationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('stations', function (Blueprint $table) {
+        /* Schema::create('stations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('store_id');
             $table->timestamps();
             $table->softDeletes();
-        });
+        }); */
     }
 
     /**

@@ -16,8 +16,7 @@ class SlotController extends Controller
      */
     public function index()
     {
-        return Slot::with('station')
-                    ->get();
+        return Slot::get();
     }
 
     /**
@@ -54,8 +53,7 @@ class SlotController extends Controller
      */
     public function show($id)
     {
-        return Slot::with('station')
-                    ->find($id);
+        return Slot::find($id);
     }
 
     /**
@@ -66,18 +64,9 @@ class SlotController extends Controller
      */
     public function showByDate($store_id, $date)
     {
-        return Slot::with('station')
-                    ->whereHas('station', 
-                        function($q) use ($store_id) {
-                            $q->where('store_id', $store_id);
-                        })
+        return Slot::where('store_id', $store_id)
                     ->where('date',$date)
-                    ->with([
-                        'station',
-                        'employee',
-                        'client',
-                        'service'
-                    ])
+                    ->with(['employee','client','service'])
                     ->get();
     }
 
@@ -136,13 +125,10 @@ class SlotController extends Controller
     public function destroy($id)
     {
         $slot = Slot::find($id);
-
         $slot->delete();
 
-        $station = Station::find($slot->station_id);
         $date = Carbon::today()->toDateString();
-
-        $days_slots = $this->showByDate($station->store_id,$date);
+        $days_slots = $this->showByDate($slot->store_id,$date);
 
         return ['success' => true,'slots' => $days_slots];
     }
@@ -151,7 +137,7 @@ class SlotController extends Controller
     {
         $slot->client_id = $request->client_id;
         $slot->employee_id = $request->employee_id;
-        $slot->station_id = $request->station_id;
+        $slot->store_id = $request->store_id;
         $slot->service_id = $request->service_id;
         $slot->date = $request->date;
         $slot->begins_at = $request->begins_at;
@@ -159,10 +145,9 @@ class SlotController extends Controller
 
         $slot->save();
 
-        $station = Station::find($slot->station_id);
         $date = Carbon::today()->toDateString();
 
-        return $this->showByDate($station->store_id,$date);
+        return $this->showByDate($slot->store_id,$date);
     }
 
 }
