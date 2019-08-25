@@ -1,30 +1,46 @@
 /**
- * First we will load all of this project's JavaScript dependencies which
- * includes Vue and other libraries. It is a great starting point when
- * building robust, powerful web applications using Vue and Laravel.
+ * 
+ * Setup
+ * 
  */
 
+    require('./bootstrap');
 
-require('./bootstrap');
+    window.Vue = require('vue');
+    window.Event = new Vue();
 
-window.Vue = require('vue');
-window.Event = new Vue();
+/**
+ * 
+ * App components
+ * 
+ */
+    //
+    // Global
+    //
+        Vue.component('main-header', require('./components/global/MainHeader.vue').default)
 
-/* App components */
-    Vue.component('main-header', require('./components/MainHeader.vue').default)
-    Vue.component('time-marker', require('./components/TimeMarker.vue').default)
-    Vue.component('employee-column', require('./components/EmployeeColumn.vue').default)
-    Vue.component('hour-row', require('./components/HourRow.vue').default)
-    Vue.component('hour-slot', require('./components/HourSlot.vue').default)
+    //
+    // View: Today
+    //
+        Vue.component('time-marker', require('./components/today/TimeMarker.vue').default)
+        Vue.component('employee-column', require('./components/today/EmployeeColumn.vue').default)
+        Vue.component('hour-row', require('./components/today/HourRow.vue').default)
+        Vue.component('hour-slot', require('./components/today/HourSlot.vue').default)
 
-    /* Modals */
-        Vue.component('modals', require('./components/Modals.vue').default)
-        Vue.component('modal-client', require('./components/ModalClient.vue').default)
-        Vue.component('modal-employee', require('./components/ModalEmployee.vue').default)
-        Vue.component('modal-service', require('./components/ModalService.vue').default)
-        Vue.component('modal-slot', require('./components/ModalSlot.vue').default)
+    //
+    // Modals
+    //
+        Vue.component('modals', require('./components/modals/Modals.vue').default)
+        Vue.component('modal-client', require('./components/modals/ModalClient.vue').default)
+        Vue.component('modal-employee', require('./components/modals/ModalEmployee.vue').default)
+        Vue.component('modal-service', require('./components/modals/ModalService.vue').default)
+        Vue.component('modal-slot', require('./components/modals/ModalSlot.vue').default)
 
-/* Outside components */
+/**
+ * 
+ * External components
+ * 
+ */
     import Autocomplete from 'vuejs-auto-complete'
     Vue.component('autocomplete', Autocomplete);
 
@@ -38,7 +54,11 @@ window.Event = new Vue();
     import EvaIcons from 'vue-eva-icons'
     Vue.use(EvaIcons)
 
-/* App */
+/**
+ * 
+ * Main App Vue instance
+ * 
+ */
 const app = new Vue({
     el: '#app',
     computed: {
@@ -79,9 +99,9 @@ const app = new Vue({
     methods: {
     	getData() {
     		axios.get('/get-data/2')
-    		.then(request => {
-    			this.refreshUsers(request.data.items)
-    		})
+            .then(response => { 
+                this.refreshUsers(response.data.items) 
+            })
     	},
         refreshUsers(obj) {
             this.clients = []
@@ -89,7 +109,7 @@ const app = new Vue({
             this.managers = []
             this.services = []
             this.stores = []
-            
+
             for (var key in obj) {
                 if (obj.hasOwnProperty(key)) {
                     obj[key].map((item) => {

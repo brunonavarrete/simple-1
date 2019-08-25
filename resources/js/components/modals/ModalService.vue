@@ -34,7 +34,7 @@
 				this.service.owner_id = 2
 				axios.post('/services/', this.service)
 				.then(response => {
-					Event.$emit('refresh', response.data.items.users)
+					Event.$emit('refresh', response.data.items)
 					this.hideModal()
 				})
 			},

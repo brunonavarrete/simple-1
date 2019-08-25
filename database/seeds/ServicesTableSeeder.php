@@ -17,7 +17,6 @@ class ServicesTableSeeder extends Seeder
         	DB::table('services')->insert([
     			'name' => $servicios[$i],
     			'cost' => rand(150,300),
-	            'duration' => 60,
 	            'owner_id' => 2,
 	        ]);
         }

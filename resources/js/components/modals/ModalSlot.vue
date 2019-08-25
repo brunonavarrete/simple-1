@@ -68,9 +68,13 @@
 
 	export default {
 		props: ['employees','clients','date','services','stores'],
+		mounted() {
+			Event.$on('modalData', obj => { this.modalData = obj })
+		},
 		data() {
 			return {
 				modalData: {
+					action: 'post',
 					data: {
 						begins_at: '',
 						client: 0,
@@ -111,9 +115,6 @@
 				return opts
 			}
 		},
-		mounted() {
-			Event.$on('modalData', obj => { this.modalData = obj })
-		},
 		methods: {
 			formatNames(arr) {
 				arr.map(e => {
@@ -140,14 +141,14 @@
 					data: this.formData,
 					url: url,
 				}).then(response => {
-					Event.$emit('refresh', response.data.items.users)
+					Event.$emit('refresh', response.data.items)
 					this.hideModal()
 				})
 			},
 			deleteSlot() {
 				axios.delete(`/slots/${ this.modalData.data.id }`)
 				.then(response => {
-					Event.$emit('refresh', response.data.items.users)
+					Event.$emit('refresh', response.data.items)
 					this.hideModal()
 				})
 			},

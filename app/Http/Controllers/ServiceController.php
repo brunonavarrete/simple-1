@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Service;
+use App\Repositories\BaseRepository;
 
 class ServiceController extends Controller
 {
@@ -28,7 +29,7 @@ class ServiceController extends Controller
         $service = new Service;
         return [
             'success' => true,
-            'services' => $this->editService($service,$request)
+            'items' => $this->editService($service,$request)
         ];
     }
 
@@ -67,7 +68,7 @@ class ServiceController extends Controller
         $service = Service::find($id);
         return [
             'success' => true,
-            'services' => $this->editService($service,$request)
+            'items' => $this->editService($service,$request)
         ];
     }
 
@@ -82,9 +83,10 @@ class ServiceController extends Controller
         $service = Service::find($id);
         $service->delete();
         
+        $repo = new BaseRepository;
         return [
             'success' => true,
-            'services' => $this->showByOwner($service->owner_id)
+            'items' => $repo->getAppData($service->owner_id)
         ];
     }
 
@@ -93,10 +95,10 @@ class ServiceController extends Controller
         $service->name = $request->name;
         $service->owner_id = $request->owner_id;
         $service->cost = $request->cost;
-        $service->duration = $request->duration;
 
         $service->save();
 
-        return $this->showByOwner($service->owner_id);
+        $repo = new BaseRepository;
+        return $repo->getAppData($service->owner_id);
     }
 }

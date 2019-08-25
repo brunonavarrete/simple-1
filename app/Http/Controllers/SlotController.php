@@ -7,6 +7,7 @@ use App\Slot;
 use App\Station;
 use App\User;
 use Carbon\Carbon;
+use App\Repositories\BaseRepository;
 
 class SlotController extends Controller
 {
@@ -54,9 +55,10 @@ class SlotController extends Controller
 
             $owner = $slot->employee->owner_id;
 
+            $repo = new BaseRepository;
             return [
                 'success' => true,
-                'items' => $this->employeesByOwner($owner,$date)
+                'items' => $repo->getAppData($owner)
             ];
         }
 
@@ -65,28 +67,6 @@ class SlotController extends Controller
      * Helper functions
      * 
      */
-
-        /**
-         * Return employees
-         */
-        public function employeesByOwner($owner_id, $date)
-        {
-            $users = User::where('owner_id', $owner_id)
-                ->with([
-                    'slots',
-                    'slots.client',
-                    'slots.service',
-                    'slots.employee'
-                ])
-                ->get();
-
-            foreach ($users as $user) {
-                // Mutator on User returns only today's
-                $user->todays_slots = true; 
-            }
-
-            return ['users' => $users];
-        }
 
         /**
          * Edit Slot attributes (used in update() and store())
@@ -106,6 +86,7 @@ class SlotController extends Controller
             $employee = User::find( $slot->employee_id );
             $owner = $employee->owner_id;
 
-            return $this->employeesByOwner($owner,$date);
+            $repo = new BaseRepository;
+            return $repo->getAppData($owner);
         }
 }

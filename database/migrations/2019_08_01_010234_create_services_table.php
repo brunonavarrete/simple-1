@@ -18,7 +18,6 @@ class CreateServicesTable extends Migration
             $table->string('name');
             $table->integer('owner_id');
             $table->decimal('cost',8,2);
-            $table->integer('duration');
             $table->timestamps();
             $table->softDeletes();
         });

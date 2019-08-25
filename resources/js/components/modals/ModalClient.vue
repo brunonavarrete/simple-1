@@ -51,7 +51,7 @@
 				this.client.owner_id = 2
 				axios.post('/users/', this.client)
 				.then(response => {
-					Event.$emit('refresh', response.data.items.users)
+					Event.$emit('refresh', response.data.items)
 					this.hideModal()
 				})
 			},
