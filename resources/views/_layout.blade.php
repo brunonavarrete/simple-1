@@ -11,10 +11,10 @@
         <link rel="stylesheet" type="text/css" href="/css/app.css">
     </head>
     <body>
-        <div id="app">
-            <div id="main-header" :style="`height: ${ headerHeight }px`">
-                Hi
-            </div>
+        <div id="app" :style="`padding-top: ${ headerHeight }px`">
+            <main-header 
+            :header-height="headerHeight"
+            :employees="employees"></main-header>
             @yield('content')
         </div>
         <script type="text/javascript" src="/js/app.js"></script>

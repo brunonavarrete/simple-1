@@ -18,6 +18,21 @@
 			:initial-display="returnName(formData.employee,'employee')"
 			:source="formatNames(employees)"></autocomplete>
 		</div>
+		<div class="row">
+			<div class="form-group col pr-1">
+				<label>Servicio:</label>
+				<autocomplete v-model="formData.service"
+				input-class="form-control"
+				:initial-value="formData.service"
+				:initial-display="modalData.data.service.name"
+				:source="services"
+				@selected="setPrice()"></autocomplete>
+			</div>
+			<div class="form-group col pl-1">
+				<label>Costo:</label>
+				<input class="form-control" v-model="formData.cost" />
+			</div>
+		</div>
 		<div class="form-group">
 			<label>Fecha:</label>
 			<input type="date" class="form-control" v-model="formData.date" />
@@ -26,45 +41,75 @@
 		<div class="row">
 			<div class="form-group col pr-1">
 				<label>Inicia:</label>
-				<input type="time" class="form-control" v-model="formData.begins_at" />
+				<select class="form-control" v-model="formData.begins_at">
+					<option v-for="q in hoursWithQuarters" 
+					v-text="q.substr(0,5)" 
+					:value="q" />
+				</select>
 			</div>
 			<div class="form-group col pl-1">
 				<label>Termina:</label>
-				<input type="time" class="form-control" v-model="formData.ends_at" />
+				<select class="form-control" v-model="formData.ends_at">
+					<option v-for="q in hoursWithQuarters" 
+					v-text="q.substr(0,5)" 
+					:value="q" />
+				</select>
 			</div>
 		</div>
 		<div slot="modal-footer" class="w-100">
 			<a class="btn btn-muted" @click="hideModal">Cancel</a>
 	        <a class="btn btn-primary" @click="sendSlot">Send</a>
+	        <a class="btn btn-danger" @click="deleteSlot" v-if="modalData.data.id">Delete</a>
 	    </div>
 	</b-modal>
 </template>
 
 <script>
-	import { BModal } from 'bootstrap-vue'
-	// import DatePicker from 'vue2-datepicker'
 
 	export default {
-		props: ['employees','clients','date'],
-		components: {
-			'b-modal': BModal,
-			//'datepicker': DatePicker
-		},
+		props: ['employees','clients','date','services','stores'],
 		data() {
 			return {
-				modalData: {}
+				modalData: {
+					data: {
+						begins_at: '',
+						client: 0,
+						date: '',
+						employee: 0,
+						ends_at: '',
+						id: '',
+						service: 0,
+					}
+				}
 			}
 		},
 		computed: {
 			formData() {
 				let data = this.modalData.data
 				return {
+					begins_at: data && data.begins_at ? data.begins_at : '',
 					client: data && data.client ? data.client.id : 0,
+					date: `${this.date.year}-${this.date.month}-${this.date.day}`,
 					employee: data && data.employee ? data.employee.id : 0,
-					begins_at: data && data.time ? data.time : '',
-					date: `${this.date.year}-${this.date.month}-${this.date.day}`
+					ends_at: data && data.ends_at ? data.ends_at : '',
+					id: data && data.id ? data.id : '',
+					cost: data && data.cost ? data.cost : '',
+					service: data && data.service ? data.service.id : 0,
 				}
 			},
+			hoursWithQuarters() {
+				let opts = []
+				let quarters = ['00','15','30','45'] // minutes
+				for (var hour = 0; hour < 24; hour++) {
+					quarters.map(q => {
+						let string = hour < 10 ? `0${hour}` : hour
+						string = `${string}:${q}:00`
+						opts.push(string)
+					})
+				}
+
+				return opts
+			}
 		},
 		mounted() {
 			Event.$on('modalData', obj => { this.modalData = obj })
@@ -80,7 +125,6 @@
 				this.$root.$emit('bv::hide::modal', 'modal-slot')
 			},
 			returnName(id,type) {
-				console.log(id,type)
 				let arr = type == 'client' ? this.formatNames(this.clients) : this.formatNames(this.employees)
 				let found = arr.find(e => {
 					return e.id === id
@@ -88,13 +132,29 @@
 				return id ? found.name : ''
 			},
 			sendSlot() {
-				this.formData.store_id = 2
-				this.formData.service_id = 2
-				axios.post('/slots', this.formData)
-				.then(response => {
-					console.log(response.data);
+				this.formData.store = 2
+				let method = this.modalData.action
+				let url = method == 'post' ? '/slots' : `/slots/${this.formData.id}`
+				axios({
+					method: this.modalData.action,
+					data: this.formData,
+					url: url,
+				}).then(response => {
+					Event.$emit('refresh', response.data.items.users)
 					this.hideModal()
 				})
+			},
+			deleteSlot() {
+				axios.delete(`/slots/${ this.modalData.data.id }`)
+				.then(response => {
+					Event.$emit('refresh', response.data.items.users)
+					this.hideModal()
+				})
+			},
+			setPrice() {
+				let service_id = this.formData.service
+				let service = this.services.find(s => s.id === service_id )				
+				this.formData.cost = +(service.cost)
 			}
 		}
 	}

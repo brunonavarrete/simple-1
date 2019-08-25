@@ -42,29 +42,32 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'first_name' => 'Cindy',
-            'last_name' => 'Empleado',
+            'last_name' => 'Jimenez',
             'email' => 'cindye@miriam.mx',
             'password' => bcrypt('asdfasdf'),
             'type' => 'employee',
-            'owner_id' => 2
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
         ]);
 
         DB::table('users')->insert([
             'first_name' => 'María',
-            'last_name' => 'Empleado',
+            'last_name' => 'Sánchez',
             'email' => 'mariae@miriam.mx',
             'password' => bcrypt('asdfasdf'),
             'type' => 'employee',
-            'owner_id' => 2
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
         ]);
 
         DB::table('users')->insert([
             'first_name' => 'Jimena',
-            'last_name' => 'Empleado',
+            'last_name' => 'Gómez',
             'email' => 'jimenae@miriam.mx',
             'password' => bcrypt('asdfasdf'),
             'type' => 'employee',
-            'owner_id' => 2
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
         ]);
 
         /*
@@ -73,7 +76,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'first_name' => 'Sandra',
-            'last_name' => 'Cliente',
+            'last_name' => 'González',
             'email' => 'sandrac@hotmail.com',
             'password' => bcrypt('asdfasdf'),
             'type' => 'client',
@@ -82,7 +85,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'first_name' => 'Alejandra',
-            'last_name' => 'Cliente',
+            'last_name' => 'Andere',
             'email' => 'alejandrac@hotmail.com',
             'password' => bcrypt('asdfasdf'),
             'type' => 'client',
@@ -91,7 +94,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'first_name' => 'Sara',
-            'last_name' => 'Cliente',
+            'last_name' => 'López',
             'email' => 'sarac@hotmail.com',
             'password' => bcrypt('asdfasdf'),
             'type' => 'client',
@@ -100,7 +103,7 @@ class UsersTableSeeder extends Seeder
 
         DB::table('users')->insert([
             'first_name' => 'Yolanda',
-            'last_name' => 'Cliente',
+            'last_name' => 'Gómez',
             'email' => 'yolandac@hotmail.com',
             'password' => bcrypt('asdfasdf'),
             'type' => 'client',
@@ -108,8 +111,8 @@ class UsersTableSeeder extends Seeder
         ]);
 
         DB::table('users')->insert([
-            'first_name' => 'Michele',
-            'last_name' => 'Cliente',
+            'first_name' => 'Michelle',
+            'last_name' => 'De la Garza',
             'email' => 'michelec@hotmail.com',
             'password' => bcrypt('asdfasdf'),
             'type' => 'client',

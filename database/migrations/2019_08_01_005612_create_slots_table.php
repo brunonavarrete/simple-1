@@ -17,7 +17,6 @@ class CreateSlotsTable extends Migration
             $table->bigIncrements('id');
             $table->integer('client_id');
             $table->integer('employee_id');
-            $table->integer('store_id');
             $table->integer('service_id');
             $table->date('date');
             $table->time('begins_at');

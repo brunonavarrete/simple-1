@@ -5,149 +5,107 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Slot;
 use App\Station;
+use App\User;
 use Carbon\Carbon;
 
 class SlotController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 
+     * CRUD
+     * 
      */
-    public function index()
-    {
-        return Slot::get();
-    }
+        public function index()
+        {
+            return Slot::get();
+        }
+
+        public function show($id)
+        {
+            return Slot::find($id);
+        }
+
+        public function store(Request $request)
+        {
+            $slot = new Slot;
+
+            return [
+                'success' => true,
+                'items' => $this->editSlot($slot,$request)
+            ];
+        }
+
+        public function update(Request $request, $id)
+        {
+            $slot = Slot::find($id);
+
+            return [
+                'success' => true,
+                'items' => $this->editSlot($slot,$request)
+            ];
+        }
+
+        public function destroy($id)
+        {
+            $slot = Slot::find($id);
+            $slot->delete();
+
+            $date = Carbon::today()->toDateString();
+
+            $owner = $slot->employee->owner_id;
+
+            return [
+                'success' => true,
+                'items' => $this->employeesByOwner($owner,$date)
+            ];
+        }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
+     * 
+     * Helper functions
+     * 
      */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $slot = new Slot;
+        /**
+         * Return employees
+         */
+        public function employeesByOwner($owner_id, $date)
+        {
+            $users = User::where('owner_id', $owner_id)
+                ->with([
+                    'slots',
+                    'slots.client',
+                    'slots.service',
+                    'slots.employee'
+                ])
+                ->get();
 
-        return [
-            'success' => true,
-            'slots' => $this->editSlot($slot,$request)
-        ];
-    }
+            foreach ($users as $user) {
+                // Mutator on User returns only today's
+                $user->todays_slots = true; 
+            }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        return Slot::find($id);
-    }
+            return ['users' => $users];
+        }
 
-    /**
-     * Display the specified resource by date.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showByDate($store_id, $date)
-    {
-        return Slot::where('store_id', $store_id)
-                    ->where('date',$date)
-                    ->with(['employee','client','service'])
-                    ->get();
-    }
+        /**
+         * Edit Slot attributes (used in update() and store())
+         */
+        public function editSlot($slot,$request)
+        {
+            $slot->client_id = $request->client;
+            $slot->employee_id = $request->employee;
+            $slot->service_id = $request->service;
+            $slot->date = $request->date;
+            $slot->begins_at = $request->begins_at;
+            $slot->ends_at = $request->ends_at;
 
-    /**
-     * Display the specified resource by date.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function showByEmployee($employee_id, $date)
-    {
-        return Slot::where('employee_id', $employee_id) 
-                    ->where('date',$date)
-                    ->with([
-                        'employee',
-                        'client',
-                        'service'
-                    ])
-                    ->get();
-    }
+            $slot->save();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+            $date = Carbon::today()->toDateString();
+            $employee = User::find( $slot->employee_id );
+            $owner = $employee->owner_id;
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $slot = Slot::find($id);
-
-        return [
-            'success' => true,
-            'slots' => $this->editSlot($slot,$request)
-        ];
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $slot = Slot::find($id);
-        $slot->delete();
-
-        $date = Carbon::today()->toDateString();
-        $days_slots = $this->showByDate($slot->store_id,$date);
-
-        return ['success' => true,'slots' => $days_slots];
-    }
-
-    public function editSlot($slot,$request)
-    {
-        $slot->client_id = $request->client_id;
-        $slot->employee_id = $request->employee_id;
-        $slot->store_id = $request->store_id;
-        $slot->service_id = $request->service_id;
-        $slot->date = $request->date;
-        $slot->begins_at = $request->begins_at;
-        $slot->ends_at = $request->ends_at;
-
-        $slot->save();
-
-        $date = Carbon::today()->toDateString();
-
-        return $this->showByDate($slot->store_id,$date);
-    }
-
+            return $this->employeesByOwner($owner,$date);
+        }
 }

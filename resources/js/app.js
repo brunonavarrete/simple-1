@@ -11,18 +11,32 @@ window.Vue = require('vue');
 window.Event = new Vue();
 
 /* App components */
-    Vue.component('employee-column', require('./components/EmployeeColumn.vue').default);
-    Vue.component('hour-row', require('./components/HourRow.vue').default);
-    Vue.component('hour-slot', require('./components/HourSlot.vue').default);
+    Vue.component('main-header', require('./components/MainHeader.vue').default)
+    Vue.component('time-marker', require('./components/TimeMarker.vue').default)
+    Vue.component('employee-column', require('./components/EmployeeColumn.vue').default)
+    Vue.component('hour-row', require('./components/HourRow.vue').default)
+    Vue.component('hour-slot', require('./components/HourSlot.vue').default)
 
     /* Modals */
-        Vue.component('modals', require('./components/Modals.vue').default);
-        Vue.component('modal-slot', require('./components/ModalSlot.vue').default);
+        Vue.component('modals', require('./components/Modals.vue').default)
+        Vue.component('modal-client', require('./components/ModalClient.vue').default)
+        Vue.component('modal-employee', require('./components/ModalEmployee.vue').default)
+        Vue.component('modal-service', require('./components/ModalService.vue').default)
+        Vue.component('modal-slot', require('./components/ModalSlot.vue').default)
 
 /* Outside components */
     import Autocomplete from 'vuejs-auto-complete'
     Vue.component('autocomplete', Autocomplete);
 
+    import { BBadge, BModal } from 'bootstrap-vue'
+    Vue.component('b-badge', BBadge)
+    Vue.component('b-modal', BModal)
+
+    import { DropdownPlugin } from 'bootstrap-vue'
+    Vue.use(DropdownPlugin)
+
+    import EvaIcons from 'vue-eva-icons'
+    Vue.use(EvaIcons)
 
 /* App */
 const app = new Vue({
@@ -45,33 +59,45 @@ const app = new Vue({
         }
     },
     data: {
-    	clients: [],
-    	employees: [],
-    	headerHeight: 65,
+        clients: [],
+        employees: [],
+        managers: [],
+    	headerHeight: 135,
     	modalData: {
     		title: '',
     		text: '',
     		type: ''
     	},
-    	rowHeight: 115
+    	rowHeight: 85,
+        services: [],
+        stores: []
     },
     mounted(){
-    	this.getUsers()
+    	this.getData()
+        Event.$on('refresh', items => this.refreshUsers( items ))
     },
     methods: {
-    	getUsers() {
-    		axios.get('/users/owner/2')
+    	getData() {
+    		axios.get('/get-data/2')
     		.then(request => {
-    			request.data.map(u => {
-    				if( u.type !== 'manager' ) {
-    					let arr = `${ u.type }s`
-    					this[arr].push(u)
-    				}
-    			})
+    			this.refreshUsers(request.data.items)
     		})
     	},
-        sendData() {
-
+        refreshUsers(obj) {
+            this.clients = []
+            this.employees = []
+            this.managers = []
+            this.services = []
+            this.stores = []
+            
+            for (var key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    obj[key].map((item) => {
+                        let arrString = ( key === 'users' ) ? `${item.type}s` : key
+                        this[arrString].push(item)
+                    })
+                }
+            }
         }
     }
 });

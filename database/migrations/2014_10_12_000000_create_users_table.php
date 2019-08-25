@@ -19,6 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('last_name');
             $table->string('email')->unique()->nullable();
             $table->string('password')->nullable();
+            $table->string('phone_number')->nullable();
             $table->rememberToken();
             $table->enum('type', array(
                 'admin',
@@ -27,6 +28,7 @@ class CreateUsersTable extends Migration
                 'employee',
                 'client'
             ));
+            $table->integer('store_id')->nullable();
             $table->integer('owner_id')->nullable();
             $table->timestamps();
             $table->softDeletes();

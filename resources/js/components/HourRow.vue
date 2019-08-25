@@ -1,6 +1,11 @@
 <template>
-    <div class="hour px-3 py-2 border-bottom border-right"
-    :style="`height: ${rowHeight}px`" @click="createSlot" />
+    <div class="hour px-3 py-2 border-top border-right"
+    :style="`height: ${rowHeight}px`" 
+    @click="createSlot">
+        <span v-if="!employeeIndex"><!-- if is first element -->
+            {{ `${ twoDigits(realHour) }:00` }}
+        </span>
+    </div>
 </template>
 
 <script>
@@ -8,7 +13,7 @@
     Vue.directive('b-modal', VBModal)
 
     export default {
-        props: ['employee','headerHeight','hour','rowHeight'],
+        props: ['employee','employeeIndex', 'headerHeight','hour','rowHeight'],
         computed: {
             realHour() {
                 return +(this.hour) - 1
@@ -25,9 +30,10 @@
                     show: 'slot',
                     action: 'post',
                     data: {
+                        begins_at: time,
+                        client: false,
                         employee: this.employee,
-                        time: time,
-                        client: false
+                        service: false,
                     }
                 })
             },

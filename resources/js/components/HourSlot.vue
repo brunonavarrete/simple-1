@@ -5,9 +5,11 @@
         height: `${ elemHeight }px`
     }"
     @click="editSlot()">
-        {{ s.begins_at.substr(0,5) }} - {{ s.ends_at.substr(0,5) }}
-        <div class="more-data">
-            {{ s.client.first_name }} {{ s.client.last_name }}<br>
+        <div class="user-data">
+            {{ s.begins_at.substr(0,5) }} - {{ s.ends_at.substr(0,5) }}
+        </div>
+        <div class="more-data" v-if="s.client">
+            {{ fullClientsName }}<br>
             {{ s.service.name }}
         </div>
     </div>
@@ -17,6 +19,9 @@
     export default {
         props: ['headerHeight','rowHeight','s'],
         computed: {
+            fullClientsName() {
+                return `${ this.s.client.first_name } ${ this.s.client.last_name }`
+            },
             elemTop() {
                 let hours = this.s.begins_at.substr(0,2)
                 let minutes = this.s.begins_at.substr(3,2)
@@ -46,11 +51,7 @@
                 Event.$emit('modalData', {
                     show: 'slot',
                     action: 'put',
-                    data: {
-                        employee: this.s.employee,
-                        time: this.s.begins_at,
-                        client: this.s.client
-                    }
+                    data: this.s
                 })
             },
         }

@@ -40,6 +40,11 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
 
+    public function store()
+    {
+        return $this->belongsTo('App\Store','store_id');
+    }
+
     public function stores()
     {
         return $this->hasMany('App\Store','owner_id');
@@ -62,5 +67,9 @@ class User extends Authenticatable
         }
 
         return $this->slots;
+    }
+
+    public function getFullNameAttribute() {
+        return "{$this->first_name} {$this->last_name}";
     }
 }

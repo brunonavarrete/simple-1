@@ -12,14 +12,13 @@ class SlotsTableSeeder extends Seeder
      */
     public function run()
     {
-    	for ($i=0; $i < 30; $i++) { 
+    	for ($i=0; $i < 100; $i++) { 
     		$begins_at = rand(10,18);
     		DB::table('slots')->insert([
     			'client_id' => rand(7,11),
     			'employee_id' => rand(4,6),
-	            'store_id' => 2,
 	            'service_id' => rand(1,6),
-	            'date' => Carbon::create('2019', '08', rand(15,25)),
+	            'date' => Carbon::create('2019', '08', rand(23,31)),
 	            'begins_at' => $begins_at . ':00:00',
 	            'ends_at' => ($begins_at + 1) . ':00:00',
 	        ]);

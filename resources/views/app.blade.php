@@ -1,19 +1,24 @@
 @extends('_layout')
 
 @section('content')
-    <div class="container-fluid px-0">
+    <div id="main-content" class="container-fluid">
         <div class="row mx-0">
-            <employee-column v-for="e in employees"
+            <employee-column v-for="e, index in employees"
+            :index="index"
             :key="e.id"
             :employee="e"
             :header-height="headerHeight"
             :row-height="rowHeight"></employee-column>
 
-            <modals 
-            :clients="clients"
-            :date="dateShown"
-            :employees="employees"></modals>
-            
+            <time-marker
+            :header-height="headerHeight"
+            :row-height="rowHeight"></time-marker>            
         </div>
+        <modals 
+        :clients="clients"
+        :date="dateShown"
+        :employees="employees"
+        :services="services"
+        :stores="stores"></modals>
     </div>
 @endsection

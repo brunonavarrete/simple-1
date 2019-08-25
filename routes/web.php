@@ -15,6 +15,8 @@ Route::get('/', function () {
     return view('app');
 });
 
+Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
+
 /*
  /
  / Store routes
@@ -54,4 +56,3 @@ Route::get('/', function () {
  /
 */
 	Route::resource('/users', 'UserController');
-	Route::get('/users/owner/{owner_id}', 'UserController@showByOwner');

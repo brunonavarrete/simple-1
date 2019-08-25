@@ -12,14 +12,14 @@ class StoresTableSeeder extends Seeder
     public function run()
     {
         DB::table('stores')->insert([
-            'name' => 'Miriam - Álamos',
+            'name' => 'Álamos',
             'owner_id' => 2,
             'opens_at' => '10:00:00',
             'closes_at' => '19:00:00',
         ]);
 
         DB::table('stores')->insert([
-            'name' => 'Miriam - Lomas del Marqués',
+            'name' => 'Lomas del Marqués',
             'owner_id' => 2,
             'opens_at' => '10:00:00',
             'closes_at' => '19:00:00',
