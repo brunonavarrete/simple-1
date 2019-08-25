@@ -14,11 +14,5 @@
             :header-height="headerHeight"
             :row-height="rowHeight"></time-marker>            
         </div>
-        <modals 
-        :clients="clients"
-        :date="dateShown"
-        :employees="employees"
-        :services="services"
-        :stores="stores"></modals>
     </div>
 @endsection

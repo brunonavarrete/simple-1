@@ -16,6 +16,7 @@
             :header-height="headerHeight"
             :employees="employees"></main-header>
             @yield('content')
+            @include('.partials.modals')
         </div>
         <script type="text/javascript" src="/js/app.js"></script>
     </body>

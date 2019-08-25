@@ -13,6 +13,8 @@
         :employees="employees"
         :services="services"
         :stores="stores"></modal-slot>
+
+        <modal-store></modal-store>
     </div>
 </template>
 

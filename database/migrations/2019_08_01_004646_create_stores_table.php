@@ -17,8 +17,8 @@ class CreateStoresTable extends Migration
             $table->bigIncrements('id');
             $table->string('name');
             $table->integer('owner_id');
-            $table->time('opens_at');
-            $table->time('closes_at');
+            $table->time('opens_at')->nullable();
+            $table->time('closes_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

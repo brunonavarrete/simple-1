@@ -30,11 +30,11 @@
     //
     // Modals
     //
-        Vue.component('modals', require('./components/modals/Modals.vue').default)
         Vue.component('modal-client', require('./components/modals/ModalClient.vue').default)
         Vue.component('modal-employee', require('./components/modals/ModalEmployee.vue').default)
         Vue.component('modal-service', require('./components/modals/ModalService.vue').default)
         Vue.component('modal-slot', require('./components/modals/ModalSlot.vue').default)
+        Vue.component('modal-store', require('./components/modals/ModalStore.vue').default)
 
 /**
  * 

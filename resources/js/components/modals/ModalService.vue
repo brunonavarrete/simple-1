@@ -13,7 +13,7 @@
 		</div>
 		<div slot="modal-footer" class="w-100">
 			<a class="btn btn-muted" @click="hideModal()">Cancel</a>
-	        <a class="btn btn-primary" @click="sendEmployee()">Send</a>
+	        <a class="btn btn-primary" @click="sendService()">Send</a>
 	    </div>
 	</b-modal>
 </template>
@@ -30,7 +30,7 @@
 			}
 		},
 		methods: {
-			sendEmployee() {
+			sendService() {
 				this.service.owner_id = 2
 				axios.post('/services/', this.service)
 				.then(response => {
