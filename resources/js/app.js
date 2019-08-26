@@ -17,6 +17,7 @@
     //
     // Global
     //
+        Vue.component('employee-header', require('./components/global/EmployeeHeader.vue').default)
         Vue.component('main-header', require('./components/global/MainHeader.vue').default)
 
     //
@@ -61,12 +62,18 @@
  */
 const app = new Vue({
     el: '#app',
+    mounted(){
+        this.getData()
+        Event.$on('refresh', items => this.refreshUsers( items ))
+        Event.$on('toggleEmployees', items => { this.employees = items })
+        Event.$on('getDateData', date => this.changeDate(date) )
+    },
     computed: {
         dateShown() { // https://stackoverflow.com/questions/23593052/format-javascript-date-to-yyyy-mm-dd
-            var d = new Date(),
-            month = '' + (d.getMonth() + 1),
-            day = '' + d.getDate(),
-            year = d.getFullYear();
+            var d = this.date
+            let month = '' + (d.getMonth() + 1)
+            let day = '' + d.getDate()
+            let year = d.getFullYear()
 
             if (month.length < 2) month = '0' + month;
             if (day.length < 2) day = '0' + day;
@@ -76,10 +83,15 @@ const app = new Vue({
                 month: month,
                 year: year
             }
+        },
+        computedDate() {
+            let date = this.dateShown
+            return `${date.year}-${date.month}-${date.day}`
         }
     },
     data: {
         clients: [],
+        date: new Date(),
         employees: [],
         managers: [],
     	headerHeight: 135,
@@ -92,13 +104,9 @@ const app = new Vue({
         services: [],
         stores: []
     },
-    mounted(){
-    	this.getData()
-        Event.$on('refresh', items => this.refreshUsers( items ))
-    },
     methods: {
     	getData() {
-    		axios.get('/get-data/2')
+    		axios.get(`/get-data/2?date=${ this.computedDate }`)
             .then(response => { 
                 this.refreshUsers(response.data.items) 
             })
@@ -118,6 +126,10 @@ const app = new Vue({
                     })
                 }
             }
+        },
+        changeDate(date){
+            this.date = new Date(`${date} 00:00:00`)
+            this.getData()
         }
     }
 });

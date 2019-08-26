@@ -1,5 +1,5 @@
 <template>
-    <div class="employee-column col px-0 position-relative">
+    <div class="employee-column col px-0 position-relative" v-if="employee.active">
         <hour-row v-for="hour in 24" 
         :employee="employee"
         :employee-index="index"

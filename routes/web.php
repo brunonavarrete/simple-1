@@ -56,3 +56,8 @@ Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
  /
 */
 	Route::resource('/users', 'UserController');
+
+	//
+	// Employees
+	//
+		Route::post('/employees/toggle/{id}', 'EmployeeController@toggle');

@@ -14,7 +14,8 @@
         <div id="app" :style="`padding-top: ${ headerHeight }px`">
             <main-header 
             :header-height="headerHeight"
-            :employees="employees"></main-header>
+            :employees="employees"
+            :date-shown="dateShown"></main-header>
             @yield('content')
             @include('.partials.modals')
         </div>

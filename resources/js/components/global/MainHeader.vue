@@ -1,20 +1,25 @@
 <template>
 	<header id="main-header" class="container-fluid d-flex flex-column" :style="`height: ${ headerHeight }px`">
 		<div id="main-header-nav" class="row border-bottom py-2">
-			<div class="col d-flex align-items-center" @click="showModal('hi')">
+			<div class="col-auto d-flex align-items-center">
 				LOGO
 			</div>
-			<div class="col-auto ml-auto d-flex align-items-center">
+			<div id="main-header-nav-date" class="mr-auto col-auto row ml-0">
+				<h2 class="h5 mb-0 form-control">
+					{{ dateShown.day }}/{{ dateShown.month }}
+				</h2>
+				<input type="date" class="form-control" v-model="date" @change="changeDate()">
+			</div>
+			<div class="col-auto d-flex align-items-center">
 				<ul class="list-unstyled m-0 d-flex">
 					<li class="mr-4">Clientes</li>
 					<li class="mr-4">Colaboradores</li>
 					<li class="mr-4">Sucursales</li>
 				</ul>
-				<b-dropdown id="dropdown-create" class="mr-2" 
-				variant="info" lazy right>
+				<b-dropdown id="dropdown-create" class="mr-2" variant="info" lazy right>
 					<template slot="button-content">
 						<div class="d-flex align-items-center">
-					      	<span class="mr-1 text-white">Reportes</span>
+					      	<!--span class="mr-1 text-white">Reportes</span-->
 					      	<eva-icon name="trending-up" width="15px" height="15px" fill="white"></eva-icon>
 					    </div>
 				    </template>
@@ -30,7 +35,7 @@
 				variant="success" lazy right>
 					<template slot="button-content">
 						<div class="d-flex align-items-center">
-					      	<span class="mr-1">Agregar</span>
+					      	<!--span class="mr-1">Agregar</span-->
 					      	<eva-icon name="plus" width="15px" height="15px" fill="white"></eva-icon>
 					    </div>
 				    </template>
@@ -46,29 +51,17 @@
 				</button>
 			</div>
 		</div>
-		<div id="main-header-employees" class="row mt-auto">
-			<div class="employee col py-2 border-right" v-for="e in employees">
-				<span class="d-block"
-				:title="e.full_name"
-				:style="`max-width: ${ widthPixels }px`">
-					{{ e.full_name }}
-				</span>
-				<small class="d-block"
-				:title="e.store.name"
-				:style="`max-width: ${ widthPixels }px`">
-					{{ e.store.name }}
-				</small>
-			</div>
-		</div>
+		<employee-header :employees="employees"></employee-header>
 
 	</header>
 </template>
 
 <script>
 	export default {
-		props: ['employees','headerHeight'],
+		props: ['dateShown','employees','headerHeight'],
 		data() {
 			return {
+				date: '',
 				navs: {
 					create: [
 						{ action: 'modal-slot', text: 'Cita' },
@@ -91,11 +84,14 @@
 				let pieces = this.employees.length
 
 				return ((windowWidth - 80) / pieces) - 35
-			}
+			},
 		},
 		methods: {
 			showModal(action){
 				this.$root.$emit('bv::show::modal', action)
+			},
+			changeDate() {
+				Event.$emit('getDateData', this.date)
 			}
 		}
 

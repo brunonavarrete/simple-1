@@ -30,6 +30,7 @@ class CreateUsersTable extends Migration
             ));
             $table->integer('store_id')->nullable();
             $table->integer('owner_id')->nullable();
+            $table->boolean('active')->default(1);
             $table->timestamps();
             $table->softDeletes();
         });

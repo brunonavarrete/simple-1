@@ -10663,7 +10663,21 @@ a.text-dark:focus {
   border-radius: 25px;
 }
 
+#main-header-nav-date {
+  position: relative;
+}
+
+#main-header-nav-date input {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
 #main-header-employees {
+  position: relative;
   padding-left: 5rem;
 }
 
@@ -10676,6 +10690,25 @@ a.text-dark:focus {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+#main-header-employees-list {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 80px;
+  height: 100%;
+}
+
+#main-header-employees-list ul {
+  left: initial;
+  right: 0;
+  transform: translateX(100%);
+}
+
+#main-header-employees-list ul li,
+#main-header-employees-list ul li * {
+  cursor: pointer;
 }
 
 #main-content {

@@ -55,13 +55,15 @@ class User extends Authenticatable
         return $this->hasMany('App\Slot','employee_id');
     }
 
-    public function setTodaysSlotsAttribute()
+    public function setTodaysSlotsAttribute($date)
     {
-        $today = Carbon::now();
-        $today = $today->toDateString();
+        // checl different dates
+
+        $day = !$date ? new Carbon($date) : Carbon::parse($date);
+        $day = $day->toDateString();
                 
         foreach ($this->slots as $key => $slot) {
-            if( $slot->date != $today ) {  
+            if( $slot->date != $day ) {  
                 unset($this->slots[$key]);
             }
         }

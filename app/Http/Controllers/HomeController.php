@@ -7,11 +7,11 @@ use App\Repositories\BaseRepository;
 
 class HomeController extends Controller
 {
-    public function getAppData(BaseRepository $repo, $owner_id)
+    public function getAppData(BaseRepository $repo, Request $request, $owner_id)
     {
         return [
         	'success' => true,
-        	'items' => (array) $repo->getAppData($owner_id)
+        	'items' => $repo->getAppData($owner_id, $request->date)
         ];
     }
 }

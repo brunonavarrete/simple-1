@@ -8,7 +8,7 @@ use App\Store;
 
 class BaseRepository
 {
-    public function getAppData($owner_id)
+    public function getAppData($owner_id, $date = false) // default val
     {
         $users = User::where('owner_id',$owner_id)
             ->with([
@@ -28,7 +28,7 @@ class BaseRepository
 
         foreach ($users as $user) {
             // Mutators on User returns only today's
-            $user->todays_slots = true; 
+            $user->todays_slots = $date; 
             $user->full_name = true;
         }
 
