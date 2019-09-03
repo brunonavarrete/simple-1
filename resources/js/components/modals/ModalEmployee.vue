@@ -55,6 +55,7 @@
 		methods: {
 			sendEmployee() {
 				this.employee.owner_id = 2
+				this.employee.selected_date = this.$root.computedDate
 				axios.post('/users/', this.employee)
 				.then(response => {
 					Event.$emit('refresh', response.data.items)

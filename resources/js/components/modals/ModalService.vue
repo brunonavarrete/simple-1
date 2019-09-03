@@ -32,6 +32,7 @@
 		methods: {
 			sendService() {
 				this.service.owner_id = 2
+				this.service.selected_date = this.$root.computedDate
 				axios.post('/services/', this.service)
 				.then(response => {
 					Event.$emit('refresh', response.data.items)

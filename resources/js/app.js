@@ -33,6 +33,7 @@
     //
         Vue.component('modal-client', require('./components/modals/ModalClient.vue').default)
         Vue.component('modal-employee', require('./components/modals/ModalEmployee.vue').default)
+        Vue.component('modal-ticket', require('./components/modals/ModalTicket.vue').default)
         Vue.component('modal-service', require('./components/modals/ModalService.vue').default)
         Vue.component('modal-slot', require('./components/modals/ModalSlot.vue').default)
         Vue.component('modal-store', require('./components/modals/ModalStore.vue').default)
@@ -87,7 +88,14 @@ const app = new Vue({
         computedDate() {
             let date = this.dateShown
             return `${date.year}-${date.month}-${date.day}`
-        }
+        },
+        activeEmployees() {
+            let arr = []
+            this.employees.map(e => { 
+                if( e.active ) arr.push(e)
+            })
+            return arr
+        },
     },
     data: {
         clients: [],
@@ -133,3 +141,16 @@ const app = new Vue({
         }
     }
 });
+
+var mainContent = document.getElementById('main-content')
+var headerEmployees = document.getElementById('header-employees')
+
+mainContent.addEventListener('scroll', () => {
+    let scroll = mainContent.scrollLeft
+    headerEmployees.scrollLeft = scroll
+})
+
+headerEmployees.addEventListener('scroll', () => {
+    let scroll = headerEmployees.scrollLeft
+    mainContent.scrollLeft = scroll
+})

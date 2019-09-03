@@ -3,6 +3,8 @@
 <modal-employee 
 :stores="stores"></modal-employee>
 
+<modal-ticket></modal-ticket>
+
 <modal-service></modal-service>
 
 <modal-slot

@@ -11,14 +11,15 @@
         <link rel="stylesheet" type="text/css" href="/css/app.css">
     </head>
     <body>
-        <div id="app" :style="`padding-top: ${ headerHeight }px`">
+        <div id="app">
             <main-header 
+            :active-employees="activeEmployees"
             :header-height="headerHeight"
             :employees="employees"
             :date-shown="dateShown"></main-header>
             @yield('content')
             @include('.partials.modals')
         </div>
-        <script type="text/javascript" src="/js/app.js"></script>
+        <script type="text/javascript" src="/js/app.js"></script>        
     </body>
 </html>

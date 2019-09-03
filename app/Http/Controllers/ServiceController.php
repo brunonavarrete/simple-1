@@ -99,6 +99,6 @@ class ServiceController extends Controller
         $service->save();
 
         $repo = new BaseRepository;
-        return $repo->getAppData($service->owner_id);
+        return $repo->getAppData($service->owner_id, $request->selected_date);
     }
 }

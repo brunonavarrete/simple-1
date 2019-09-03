@@ -79,6 +79,7 @@ class SlotController extends Controller
             $slot->date = $request->date;
             $slot->begins_at = $request->begins_at;
             $slot->ends_at = $request->ends_at;
+            $slot->status = $request->status;
 
             $slot->save();
 
@@ -87,6 +88,6 @@ class SlotController extends Controller
             $owner = $employee->owner_id;
 
             $repo = new BaseRepository;
-            return $repo->getAppData($owner);
+            return $repo->getAppData($owner, $request->selected_date);
         }
 }

@@ -18,20 +18,14 @@
 			:initial-display="returnName(formData.employee,'employee')"
 			:source="formatNames(employees)"></autocomplete>
 		</div>
-		<div class="row">
-			<div class="form-group col pr-1">
-				<label>Servicio:</label>
-				<autocomplete v-model="formData.service"
-				input-class="form-control"
-				:initial-value="formData.service"
-				:initial-display="modalData.data.service.name"
-				:source="services"
-				@selected="setPrice()"></autocomplete>
-			</div>
-			<div class="form-group col pl-1">
-				<label>Costo:</label>
-				<input class="form-control" v-model="formData.cost" />
-			</div>
+		<div class="form-group">
+			<label>Servicio:</label>
+			<autocomplete v-model="formData.service"
+			input-class="form-control"
+			:initial-value="formData.service"
+			:initial-display="modalData.data.service.name"
+			:source="services"
+			@selected="setPrice()"></autocomplete>
 		</div>
 		<div class="form-group">
 			<label>Fecha:</label>
@@ -56,10 +50,18 @@
 				</select>
 			</div>
 		</div>
+		<div class="form-group">
+			<label>Estatus:</label>
+			<select class="custom-select" v-model="formData.status">
+				<option v-for="s in status" :value="s.value">
+					{{ s.label }}
+				</option>
+			</select>
+		</div>
 		<div slot="modal-footer" class="w-100">
 			<a class="btn btn-muted" @click="hideModal">Cancel</a>
 	        <a class="btn btn-primary" @click="sendSlot">Send</a>
-	        <a class="btn btn-danger" @click="deleteSlot" v-if="modalData.data.id">Delete</a>
+	        <a class="btn btn-success" @click="showTicketModal">Ticket</a>
 	    </div>
 	</b-modal>
 </template>
@@ -83,8 +85,14 @@
 						ends_at: '',
 						id: '',
 						service: 0,
+						status: 'standby'
 					}
-				}
+				},
+				status: [
+					{ value: 'stand_by', label: 'En espera' },
+					{ value: 'cancelled', label: 'Cancelada' },
+					{ value: 'attended', label: 'Atendió' }
+				]
 			}
 		},
 		computed: {
@@ -99,6 +107,7 @@
 					id: data && data.id ? data.id : '',
 					cost: data && data.cost ? data.cost : '',
 					service: data && data.service ? data.service.id : 0,
+					status: data && data.status ? data.status : 'standby',
 				}
 			},
 			hoursWithQuarters() {
@@ -126,23 +135,27 @@
 				this.$root.$emit('bv::hide::modal', 'modal-slot')
 			},
 			returnName(id,type) {
-				let arr = type == 'client' ? this.formatNames(this.clients) : this.formatNames(this.employees)
-				let found = arr.find(e => {
-					return e.id === id
+				let arr = type == 'client' ? this.clients : this.employees
+				let name = ''
+				arr.map(e => {
+					if( e.id == id ) {
+						name = e.full_name
+					}
 				})
-				return id ? found.name : ''
+				return name
 			},
-			sendSlot() {
+			sendSlot(hide = true) {
 				this.formData.store = 2
 				let method = this.modalData.action
 				let url = method == 'post' ? '/slots' : `/slots/${this.formData.id}`
+				this.formData.selected_date = this.$root.computedDate
 				axios({
 					method: this.modalData.action,
 					data: this.formData,
 					url: url,
 				}).then(response => {
 					Event.$emit('refresh', response.data.items)
-					this.hideModal()
+					if( hide ) this.hideModal()
 				})
 			},
 			deleteSlot() {
@@ -156,7 +169,12 @@
 				let service_id = this.formData.service
 				let service = this.services.find(s => s.id === service_id )				
 				this.formData.cost = +(service.cost)
-			}
+			},
+			showTicketModal(){
+				this.sendSlot(false)
+				Event.$emit('ticketData', this.modalData.data)
+				this.$root.$emit('bv::show::modal', 'modal-ticket')
+			},
 		}
 	}
 </script>

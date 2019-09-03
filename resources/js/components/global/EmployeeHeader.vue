@@ -1,6 +1,6 @@
 <template>
-	<div id="main-header-employees" class="row mt-auto">
-		<div id="main-header-employees-list">
+	<div id="header-employees">
+		<div id="header-employees-list">
 			<button class="btn btn-light w-100 h-100" @click="open = !open">
 				<eva-icon name="checkmark-square-2-outline" height="20px" fill="lightgray"></eva-icon>
 			</button>
@@ -16,26 +16,28 @@
 				</li>
 			</ul>
 		</div>
-		<div class="employee col py-2 border-right" 
-		v-for="e in employees"
-		v-if="e.active">
-			<span class="d-block"
-			:title="e.full_name"
-			:style="`max-width: ${ widthPixels }px`">
-				{{ e.full_name }}
-			</span>
-			<small class="d-block"
-			:title="e.store.name"
-			:style="`max-width: ${ widthPixels }px`">
-				{{ e.store.name }}
-			</small>
+		<div class="employee-columns" :style="`width: ${280 * activeEmployees.length}px;`">
+			<div class="employee col py-2 border-right" 
+			:style="`min-width: ${100 / activeEmployees.length}%`"
+			v-for="e in activeEmployees">
+				<span class="d-block"
+				:title="e.full_name"
+				:style="`max-width: ${ widthPixels }px`">
+					{{ e.full_name }}
+				</span>
+				<small class="d-block"
+				:title="e.store.name"
+				:style="`max-width: ${ widthPixels }px`">
+					{{ e.store.name }}
+				</small>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script>
 	export default {
-		props: ['employees'],
+		props: ['activeEmployees','employees'],
 		data() {
 			return {
 				open: false
@@ -58,9 +60,5 @@
 			}
 		}
 
-	};
+	}
 </script>
-
-<style lang="scss">
-	#main-header-employees-list {}
-</style>

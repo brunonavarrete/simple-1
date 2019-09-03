@@ -27,6 +27,7 @@
 		methods: {
 			sendStore() {
 				this.store.owner_id = 2
+				this.store.selected_date = this.$root.computedDate
 				axios.post('/stores/', this.store)
 				.then(response => {
 					Event.$emit('refresh', response.data.items)

@@ -18,6 +18,11 @@ class CreateSlotsTable extends Migration
             $table->integer('client_id');
             $table->integer('employee_id');
             $table->integer('service_id');
+            $table->enum('status', [
+                'stand_by',
+                'attended',
+                'cancelled'
+            ])->default('stand_by');
             $table->date('date');
             $table->time('begins_at');
             $table->time('ends_at');

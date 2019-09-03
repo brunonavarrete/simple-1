@@ -1,16 +1,23 @@
 <template>
-	<header id="main-header" class="container-fluid d-flex flex-column" :style="`height: ${ headerHeight }px`">
+	<header id="main-header" class="container-fluid d-flex flex-column">
 		<div id="main-header-nav" class="row border-bottom py-2">
 			<div class="col-auto d-flex align-items-center">
 				LOGO
 			</div>
-			<div id="main-header-nav-date" class="mr-auto col-auto row ml-0">
-				<h2 class="h5 mb-0 form-control">
-					{{ dateShown.day }}/{{ dateShown.month }}
-				</h2>
-				<input type="date" class="form-control" v-model="date" @change="changeDate()">
+			<div id="main-header-nav-date" class="mr-auto px-0 col-auto row ml-0">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="basic-addon1">
+							<eva-icon name="calendar" width="15px" height="15px" fill="gray"></eva-icon>
+						</span>
+					</div>
+					<h2 class="h5 mb-0 form-control">
+						{{ dateShown.day }}/{{ dateShown.month }}
+					</h2>
+				</div>
+				<input type="date" v-model="date" @change="changeDate()">
 			</div>
-			<div class="col-auto d-flex align-items-center">
+			<div class="d-none d-lg-flex col-auto align-items-center">
 				<ul class="list-unstyled m-0 d-flex">
 					<li class="mr-4">Clientes</li>
 					<li class="mr-4">Colaboradores</li>
@@ -51,14 +58,12 @@
 				</button>
 			</div>
 		</div>
-		<employee-header :employees="employees"></employee-header>
-
 	</header>
 </template>
 
 <script>
 	export default {
-		props: ['dateShown','employees','headerHeight'],
+		props: ['activeEmployees','dateShown','employees','headerHeight'],
 		data() {
 			return {
 				date: '',

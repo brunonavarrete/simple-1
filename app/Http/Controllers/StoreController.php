@@ -63,6 +63,6 @@ class StoreController extends Controller
         $store->save();
 
         $repo = new BaseRepository;
-        return $repo->getAppData($store->owner_id);
+        return $repo->getAppData($store->owner_id, $request->selected_date);
     }
 }

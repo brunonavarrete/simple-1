@@ -70,6 +70,36 @@ class UsersTableSeeder extends Seeder
             'store_id' => rand(1,2)
         ]);
 
+        DB::table('users')->insert([
+            'first_name' => 'Daniela',
+            'last_name' => 'Hernández',
+            'email' => 'danih@miriam.mx',
+            'password' => bcrypt('asdfasdf'),
+            'type' => 'employee',
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
+        ]);
+
+        DB::table('users')->insert([
+            'first_name' => 'Laura',
+            'last_name' => 'Chavez',
+            'email' => 'lauc@miriam.mx',
+            'password' => bcrypt('asdfasdf'),
+            'type' => 'employee',
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
+        ]);
+
+        DB::table('users')->insert([
+            'first_name' => 'Georgina',
+            'last_name' => 'Valle',
+            'email' => 'geov@miriam.mx',
+            'password' => bcrypt('asdfasdf'),
+            'type' => 'employee',
+            'owner_id' => 2,
+            'store_id' => rand(1,2)
+        ]);
+
         /*
          / Customer
         */

@@ -76,6 +76,6 @@ class UserController extends Controller
             $user->save();
 
             $repo = new BaseRepository;
-            return $repo->getAppData($user->owner_id);
+            return $repo->getAppData($user->owner_id, $request->selected_date);
         }
 }
