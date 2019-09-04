@@ -28,4 +28,9 @@ class Slot extends Model
     {
     	return $this->belongsTo('App\Service', 'service_id');
     }
+
+    public function ticket()
+    {
+        return $this->hasOne('App\Ticket', 'slot_id');
+    }
 }

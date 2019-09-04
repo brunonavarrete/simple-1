@@ -16,7 +16,9 @@ class BaseRepository
 				'slots',
 				'slots.client',
 				'slots.service',
-				'slots.employee'
+				'slots.employee',
+                'slots.ticket',
+                'slots.ticket.concepts'
             ])
             ->get();
 

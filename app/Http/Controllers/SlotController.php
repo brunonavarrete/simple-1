@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Concept;
+use App\Ticket;
+use App\Service;
 use App\Slot;
 use App\Station;
 use App\User;
@@ -32,7 +35,7 @@ class SlotController extends Controller
 
             return [
                 'success' => true,
-                'items' => $this->editSlot($slot,$request)
+                'items' => $this->editSlot($slot,$request,true)
             ];
         }
 
@@ -42,7 +45,7 @@ class SlotController extends Controller
 
             return [
                 'success' => true,
-                'items' => $this->editSlot($slot,$request)
+                'items' => $this->editSlot($slot,$request,false)
             ];
         }
 
@@ -51,7 +54,7 @@ class SlotController extends Controller
             $slot = Slot::find($id);
             $slot->delete();
 
-            $date = Carbon::today()->toDateString();
+            // $date = Carbon::today()->toDateString();
 
             $owner = $slot->employee->owner_id;
 
@@ -71,7 +74,7 @@ class SlotController extends Controller
         /**
          * Edit Slot attributes (used in update() and store())
          */
-        public function editSlot($slot,$request)
+        public function editSlot($slot,$request,$new)
         {
             $slot->client_id = $request->client;
             $slot->employee_id = $request->employee;
@@ -83,11 +86,31 @@ class SlotController extends Controller
 
             $slot->save();
 
-            $date = Carbon::today()->toDateString();
+            /* 
+             * Create new ticket
+             */
+
+            if( $new ) { $this->newTicket($slot); }
+
+            // $date = Carbon::today()->toDateString();
             $employee = User::find( $slot->employee_id );
-            $owner = $employee->owner_id;
 
             $repo = new BaseRepository;
-            return $repo->getAppData($owner, $request->selected_date);
+            return $repo->getAppData($employee->owner_id, $request->selected_date);
+        }
+
+        public function newTicket($slot)
+        {
+            $service = Service::find($slot->service_id);
+
+            $ticket = new Ticket;
+            $ticket->slot_id = $slot->id;
+            $ticket->save();
+
+            $concept = new Concept;
+            $concept->ticket_id = $ticket->id;
+            $concept->concept = $service['name'];
+            $concept->cost = $service['cost'];
+            $concept->save();
         }
 }

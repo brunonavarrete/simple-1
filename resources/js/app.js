@@ -38,6 +38,10 @@
         Vue.component('modal-slot', require('./components/modals/ModalSlot.vue').default)
         Vue.component('modal-store', require('./components/modals/ModalStore.vue').default)
 
+        // Concepts
+
+            Vue.component('concept-row', require('./components/modals/concepts/ConceptRow.vue').default)
+
 /**
  * 
  * External components
@@ -102,7 +106,7 @@ const app = new Vue({
         date: new Date(),
         employees: [],
         managers: [],
-    	headerHeight: 135,
+    	headerHeight: 112,
     	modalData: {
     		title: '',
     		text: '',
@@ -142,15 +146,23 @@ const app = new Vue({
     }
 });
 
-var mainContent = document.getElementById('main-content')
-var headerEmployees = document.getElementById('header-employees')
+/**
+ * 
+ * UI / UX
+ * 
+ */
 
-mainContent.addEventListener('scroll', () => {
-    let scroll = mainContent.scrollLeft
-    headerEmployees.scrollLeft = scroll
-})
+    /* sync scrolls */
 
-headerEmployees.addEventListener('scroll', () => {
-    let scroll = headerEmployees.scrollLeft
-    mainContent.scrollLeft = scroll
-})
+        var mainContent = document.getElementById('main-content')
+        var headerEmployees = document.getElementById('header-employees')
+
+        mainContent.addEventListener('scroll', () => {
+            let scroll = mainContent.scrollLeft
+            headerEmployees.scrollLeft = scroll
+        })
+
+        headerEmployees.addEventListener('scroll', () => {
+            let scroll = headerEmployees.scrollLeft
+            mainContent.scrollLeft = scroll
+        })

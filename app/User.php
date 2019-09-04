@@ -57,8 +57,6 @@ class User extends Authenticatable
 
     public function setTodaysSlotsAttribute($date)
     {
-        // checl different dates
-
         $day = !$date ? new Carbon($date) : Carbon::parse($date);
         $day = $day->toDateString();
                 

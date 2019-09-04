@@ -13,7 +13,7 @@
 
 Route::get('/', function () {
     return view('app');
-});
+})->middleware('auth');
 
 Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
 
@@ -49,6 +49,14 @@ Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
 	Route::resource('/slots', 'SlotController');
 	Route::get('/slots/{store_id}/{date}', 'SlotController@showByDate');
 	Route::get('/slots/employee/{employee_id}/{date}', 'SlotController@showByEmployee');
+
+/*
+ /
+ / Slot routes
+ /
+*/
+
+	Route::resource('/concepts', 'ConceptController');
 
 /*
  /
