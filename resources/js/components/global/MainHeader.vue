@@ -53,7 +53,7 @@
 				    	{{ link.text }}
 				    </b-dropdown-item-button>
 				</b-dropdown>
-				<button class="btn btn-secondary">
+				<button class="btn btn-secondary dropdown btn-group b-dropdown mr-2" @click="logout()">
 					<eva-icon name="person" width="15px" height="15px" fill="white"></eva-icon>
 				</button>
 			</div>
@@ -80,7 +80,8 @@
 						{ action: 'employees', text: 'Top colaboradores' },
 						{ action: 'sales', text: 'Ventas' },
 					],
-				}
+				},
+				csrf: document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
 			}
 		},
 		computed: {
@@ -92,12 +93,20 @@
 			},
 		},
 		methods: {
+			changeDate() {
+				Event.$emit('getDateData', this.date)
+			},
+			logout() {
+				axios.post('/logout')
+				.then(response => {
+					if( response.status === 204 ) {
+						document.location.href = '/login'
+					}
+				})
+			},
 			showModal(action){
 				this.$root.$emit('bv::show::modal', action)
 			},
-			changeDate() {
-				Event.$emit('getDateData', this.date)
-			}
 		}
 
 	}

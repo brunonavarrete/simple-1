@@ -31,7 +31,7 @@
 		},
 		methods: {
 			sendService() {
-				this.service.owner_id = 2
+				this.service.owner_id = this.$root.owner_id
 				this.service.selected_date = this.$root.computedDate
 				axios.post('/services/', this.service)
 				.then(response => {

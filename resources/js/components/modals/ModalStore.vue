@@ -26,7 +26,7 @@
 		},
 		methods: {
 			sendStore() {
-				this.store.owner_id = 2
+				this.store.owner_id = this.$root.owner_id
 				this.store.selected_date = this.$root.computedDate
 				axios.post('/stores/', this.store)
 				.then(response => {

@@ -18,7 +18,7 @@ class SlotsTableSeeder extends Seeder
     			'client_id' => rand(10,14),
     			'employee_id' => rand(4,9),
 	            'service_id' => rand(1,6),
-	            'date' => Carbon::create('2019', '09', rand(1,15)),
+	            'date' => Carbon::create('2019', '09', rand(9,13)),
 	            'begins_at' => $begins_at . ':00:00',
 	            'ends_at' => ($begins_at + 1) . ':00:00',
 	        ]);

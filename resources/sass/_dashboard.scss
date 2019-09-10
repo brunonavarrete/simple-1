@@ -1,0 +1,30 @@
+#main-content {
+	&.dashboard {
+		padding-top: 0;
+		padding-left: $sidebar-width;
+		> h1 {
+			margin: 25px 0 15px;
+			padding: 0 60px;
+		}
+	}
+}
+
+#dashboard-sidebar {
+	position: fixed;
+	width: $sidebar-width;
+	height: 100%;
+	top: 0;
+	left: 0;
+	padding-top: $header-height;
+	background-color: rgba(0, 0, 0, 0.05);
+	nav {
+		margin: 35px 0;
+		li {
+			padding: 13px 15px;
+			font-size: 0.9rem;
+			&.active {
+				background-color: $body-bg;
+			}
+		}
+	}
+}

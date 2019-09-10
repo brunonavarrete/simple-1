@@ -11,11 +11,20 @@
 |
 */
 
-Route::get('/', function () {
-    return view('app');
-})->middleware('auth');
+/*
+ /
+ / Home routes
+ /
+*/
+	Route::get('/', function() {
+	    return view('app');
+	})->middleware('auth');
 
-Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
+	Route::get('/get-data', 'HomeController@getAppData');
+	Route::get('/home', 'HomeController@index')->name('home');
+	Route::get('/dashboard', function() {
+		return view('dashboard');
+	});
 
 /*
  /
@@ -69,3 +78,12 @@ Route::get('/get-data/{owner_id}', 'HomeController@getAppData');
 	// Employees
 	//
 		Route::post('/employees/toggle/{id}', 'EmployeeController@toggle');
+
+/*
+ /
+ / Auth routes
+ /
+*/
+ 	Auth::routes();
+
+

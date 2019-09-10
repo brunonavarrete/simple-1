@@ -48,7 +48,7 @@
 		},
 		methods: {
 			sendClient() {
-				this.client.owner_id = 2
+				this.client.owner_id = this.$root.owner_id
 				this.client.selected_date = this.$root.computedDate
 				axios.post('/users/', this.client)
 				.then(response => {

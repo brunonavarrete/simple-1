@@ -54,7 +54,7 @@
 		},
 		methods: {
 			sendEmployee() {
-				this.employee.owner_id = 2
+				this.employee.owner_id = this.$root.owner_id
 				this.employee.selected_date = this.$root.computedDate
 				axios.post('/users/', this.employee)
 				.then(response => {

@@ -145,7 +145,7 @@
 				return name
 			},
 			sendSlot(hide = true) {
-				this.formData.store = 2
+				this.formData.store = this.$root.owner_id
 				let method = this.modalData.action
 				let url = method == 'post' ? '/slots' : `/slots/${this.formData.id}`
 				this.formData.selected_date = this.$root.computedDate

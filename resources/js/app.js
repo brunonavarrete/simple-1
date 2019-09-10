@@ -29,6 +29,11 @@
         Vue.component('hour-slot', require('./components/today/HourSlot.vue').default)
 
     //
+    // View: Dashboard
+    //
+        Vue.component('dashboard-table', require('./components/dashboard/DashboardTable.vue').default)
+
+    //
     // Modals
     //
         Vue.component('modal-client', require('./components/modals/ModalClient.vue').default)
@@ -50,12 +55,11 @@
     import Autocomplete from 'vuejs-auto-complete'
     Vue.component('autocomplete', Autocomplete);
 
-    import { BBadge, BModal } from 'bootstrap-vue'
+    import { BBadge, BModal, TablePlugin, DropdownPlugin } from 'bootstrap-vue'
     Vue.component('b-badge', BBadge)
     Vue.component('b-modal', BModal)
-
-    import { DropdownPlugin } from 'bootstrap-vue'
     Vue.use(DropdownPlugin)
+    Vue.use(TablePlugin)
 
     import EvaIcons from 'vue-eva-icons'
     Vue.use(EvaIcons)
@@ -104,6 +108,7 @@ const app = new Vue({
     data: {
         clients: [],
         date: new Date(),
+        owner_id: 0,
         employees: [],
         managers: [],
     	headerHeight: 112,
@@ -118,8 +123,9 @@ const app = new Vue({
     },
     methods: {
     	getData() {
-    		axios.get(`/get-data/2?date=${ this.computedDate }`)
+    		axios.get(`/get-data?date=${ this.computedDate }`)
             .then(response => { 
+                this.owner_id = response.data.owner_id
                 this.refreshUsers(response.data.items) 
             })
     	},
@@ -146,23 +152,4 @@ const app = new Vue({
     }
 });
 
-/**
- * 
- * UI / UX
- * 
- */
-
-    /* sync scrolls */
-
-        var mainContent = document.getElementById('main-content')
-        var headerEmployees = document.getElementById('header-employees')
-
-        mainContent.addEventListener('scroll', () => {
-            let scroll = mainContent.scrollLeft
-            headerEmployees.scrollLeft = scroll
-        })
-
-        headerEmployees.addEventListener('scroll', () => {
-            let scroll = headerEmployees.scrollLeft
-            mainContent.scrollLeft = scroll
-        })
+require('./ui');
